@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin Crowley - Platform Engineer | SRE</title>
+    <meta name="description" content="Platform Engineer specializing in Terraform and Python for cloud infrastructure automation. Looking for SRE and platform engineering opportunities.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #18181f;
+            --border: #27272a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-muted: rgba(59, 130, 246, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            padding: 80px 0 60px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        
+        .header-left h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        
+        .title {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .location {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .header-right {
+            flex-shrink: 0;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .contact-links a:hover {
+            color: var(--accent);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        main {
+            padding: 60px 0;
+        }
+        
+        section {
+            margin-bottom: 56px;
+        }
+        
+        section:last-child {
+            margin-bottom: 0;
+        }
+        
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .summary {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        
+        .experience-item {
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            position: relative;
+        }
+        
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+        
+        .exp-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .exp-period {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .exp-company {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .exp-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .skill-category h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .skill-tag {
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+        
+        .project-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .project-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .project-tech span {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .certs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+        
+        .cert-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-muted);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
+        .cert-info {
+            flex: 1;
+        }
+        
+        .cert-name {
+            font-weight: 600;
+        }
+        
+        .cert-issuer {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .cert-status {
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                width: 100%;
+            }
+            
+            .contact-links {
+                align-items: flex-start;
+            }
+            
+            .cta-buttons {
+                justify-content: flex-start;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Kevin Crowley</h1>
+                    <p class="title">Platform Engineer | SRE</p>
+                    <p class="location">County Meath, Ireland</p>
+                </div>
+                <div class="header-right">
+                    <div class="contact-links">
+                        <a href="mailto:kevincrowley@gmail.com">kevincrowley@gmail.com</a>
+                        <a href="https://www.linkedin.com/in/kevincrowleyin/" target="_blank">LinkedIn</a>
+                    </div>
+                    <div class="cta-buttons">
+                        <a href="https://www.linkedin.com/in/kevincrowleyin/" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
+                        <a href="mailto:kevincrowley@gmail.com" class="btn btn-secondary">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section>
+            <h2>About</h2>
+            <p class="summary">Platform Engineer specializing in cloud infrastructure automation using Terraform and Python. Building reliable, scalable systems with a focus on IaC, observability, and site reliability practices.</p>
+        </section>
+        
+        <section>
+            <h2>Experience</h2>
+            <div class="experience-list">
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <span class="exp-title">Platform Engineer</span>
+                        <span class="exp-period">Present</span>
+                    </div>
+                    <p class="exp-company">Travelport</p>
+                    <p class="exp-description">Designing and maintaining cloud infrastructure using Terraform. Building automation pipelines and Python tooling for infrastructure management. Implementing observability solutions and reliability engineering practices.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Infrastructure as Code</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Terraform</span>
+                        <span class="skill-tag">HCL</span>
+                        <span class="skill-tag">Terragrunt</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Programming</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Bash</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Cloud Platforms</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Azure</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Containers</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Kubernetes</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Observability</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Prometheus</span>
+                        <span class="skill-tag">Grafana</span>
+                        <span class="skill-tag">ELK Stack</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>CI/CD</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">GitHub Actions</span>
+                        <span class="skill-tag">GitLab CI</span>
+                        <span class="skill-tag">Jenkins</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Databases</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Key Projects</h2>
+            <div class="projects-grid">
+                <div class="project-item">
+                    <h3 class="project-title">Multi-Cloud Infrastructure Automation</h3>
+                    <p class="project-description">Built Terraform modules for reusable, production-ready infrastructure patterns across AWS and Azure environments.</p>
+                    <div class="project-tech">
+                        <span>Terraform</span>
+                        <span>Python</span>
+                        <span>AWS</span>
+                        <span>Azure</span>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h3 class="project-title">Infrastructure Testing Framework</h3>
+                    <p class="project-description">Developed Python-based testing framework for Terraform configurations using pytest and checkov.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Terraform</span>
+                        <span>Pytest</span>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h3 class="project-title">GitOps Deployment Pipeline</h3>
+                    <p class="project-description">Implemented automated infrastructure deployments using GitHub Actions and Terraform Cloud.</p>
+                    <div class="project-tech">
+                        <span>Terraform Cloud</span>
+                        <span>GitHub Actions</span>
+                        <span>Kubernetes</span>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h3 class="project-title">Monitoring & Alerting Dashboard</h3>
+                    <p class="project-description">Created Grafana dashboards and Prometheus alerting rules for infrastructure health monitoring.</p>
+                    <div class="project-tech">
+                        <span>Prometheus</span>
+                        <span>Grafana</span>
+                        <span>Python</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Certifications</h2>
+            <div class="certs-list">
+                <div class="cert-item">
+                    <div class="cert-icon">AWS</div>
+                    <div class="cert-info">
+                        <div class="cert-name">HashiCorp Terraform Associate</div>
+                        <div class="cert-issuer">HashiCorp</div>
+                    </div>
+                    <span class="cert-status">2024</span>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-icon">AWS</div>
+                    <div class="cert-info">
+                        <div class="cert-name">AWS Solutions Architect</div>
+                        <div class="cert-issuer">Amazon Web Services</div>
+                    </div>
+                    <span class="cert-status">2023</span>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-icon">AWS</div>
+                    <div class="cert-info">
+                        <div class="cert-name">Certified Kubernetes Administrator</div>
+                        <div class="cert-issuer">CNCF</div>
+                    </div>
+                    <span class="cert-status">2023</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Kevin Crowley. Open to SRE and Platform Engineering roles. Terraform & Python.</p>
+        </div>
+    </footer>
+</body>
+</html>
