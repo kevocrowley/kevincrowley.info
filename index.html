@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kevin Crowley - Platform Engineer | SRE</title>
-    <meta name="description" content="Platform Engineer specializing in Terraform and Python for cloud infrastructure automation. Looking for SRE and platform engineering opportunities.">
+    <title>Kevin Crowley - Platform Engineer | AI Infrastructure</title>
+    <meta name="description" content="Platform Engineer specializing in AWS Bedrock Agents, AgentCore, and cloud infrastructure automation. Building reliable, scalable AI systems.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,6 +20,19 @@
             --accent-hover: #2563eb;
             --accent-muted: rgba(59, 130, 246, 0.1);
         }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-muted: rgba(37, 99, 235, 0.1);
+        }
         
         * {
             margin: 0;
@@ -33,6 +46,7 @@
             color: var(--text-primary);
             line-height: 1.7;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         .container {
@@ -74,6 +88,29 @@
         
         .header-right {
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
         
         .contact-links {
@@ -171,6 +208,11 @@
             line-height: 1.8;
         }
         
+        .highlight {
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
         .experience-list {
             display: flex;
             flex-direction: column;
@@ -233,6 +275,11 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .skill-category:hover {
+            border-color: var(--accent);
         }
         
         .skill-category h3 {
@@ -360,7 +407,55 @@
             color: var(--text-muted);
             font-size: 0.9rem;
         }
-        
+
+        .architecture-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            overflow-x: auto;
+        }
+
+        .architecture-diagram h3 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .arch-flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .arch-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .arch-box.highlight-box {
+            border-color: var(--accent);
+            background: var(--accent-muted);
+        }
+
+        .arch-box span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .arch-arrow {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -368,6 +463,11 @@
             
             .header-right {
                 width: 100%;
+                align-items: flex-start;
+            }
+
+            .theme-toggle {
+                align-self: flex-end;
             }
             
             .contact-links {
@@ -381,6 +481,14 @@
             h1 {
                 font-size: 2rem;
             }
+
+            .arch-flow {
+                flex-direction: column;
+            }
+
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
         }
     </style>
 </head>
@@ -390,10 +498,14 @@
             <div class="header-content">
                 <div class="header-left">
                     <h1>Kevin Crowley</h1>
-                    <p class="title">Platform Engineer | SRE</p>
+                    <p class="title">Platform Engineer | AI Infrastructure</p>
                     <p class="location">County Meath, Ireland</p>
                 </div>
                 <div class="header-right">
+                    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+                        <span id="themeIcon">&#9790;</span>
+                        <span id="themeText">Light</span>
+                    </button>
                     <div class="contact-links">
                         <a href="mailto:kevincrowley@gmail.com">kevincrowley@gmail.com</a>
                         <a href="https://www.linkedin.com/in/kevincrowleyin/" target="_blank">LinkedIn</a>
@@ -410,7 +522,32 @@
     <main class="container">
         <section>
             <h2>About</h2>
-            <p class="summary">Platform Engineer specializing in cloud infrastructure automation using Terraform and Python. Building reliable, scalable systems with a focus on IaC, observability, and site reliability practices.</p>
+            <p class="summary">
+                Platform Engineer specializing in <span class="highlight">AWS Bedrock Agents</span>, <span class="highlight">AgentCore</span>, and cloud infrastructure automation. Building reliable, scalable AI systems with a focus on <span class="highlight">knowledge bases</span>, <span class="highlight">agent orchestration</span>, and <span class="highlight">AWS cloud platform architecture</span>. Expert in Terraform, Python, and designing production-ready AI infrastructure.
+            </p>
+        </section>
+
+        <section>
+            <h2>AWS AI Infrastructure Architecture</h2>
+            <div class="architecture-diagram">
+                <h3>Bedrock Agent & Knowledge Base Architecture</h3>
+                <div class="arch-flow">
+                    <div class="arch-box"><span>User Interface</span></div>
+                    <span class="arch-arrow">&#8594;</span>
+                    <div class="arch-box"><span>API Gateway</span></div>
+                    <span class="arch-arrow">&#8594;</span>
+                    <div class="arch-box highlight-box"><span>Bedrock Agent</span></div>
+                    <span class="arch-arrow">&#8594;</span>
+                    <div class="arch-box highlight-box"><span>AgentCore</span></div>
+                    <span class="arch-arrow">&#8594;</span>
+                    <div class="arch-box"><span>Knowledge Base</span></div>
+                    <span class="arch-arrow">&#8629;</span>
+                    <div class="arch-box"><span>OpenSearch / S3</span></div>
+                </div>
+            </div>
+            <p class="summary">
+                Designed and implemented end-to-end <span class="highlight">AI agent infrastructure</span> on AWS, leveraging Bedrock's managed agent capabilities with custom <span class="highlight">AgentCore orchestration</span> for complex multi-step workflows. Built scalable <span class="highlight">knowledge base</span> integrations using OpenSearch Serverless and S3 for vector storage and retrieval.
+            </p>
         </section>
         
         <section>
@@ -418,11 +555,23 @@
             <div class="experience-list">
                 <div class="experience-item">
                     <div class="exp-header">
-                        <span class="exp-title">Platform Engineer</span>
+                        <span class="exp-title">Platform Engineer - AI Infrastructure</span>
                         <span class="exp-period">Present</span>
                     </div>
                     <p class="exp-company">Travelport</p>
-                    <p class="exp-description">Designing and maintaining cloud infrastructure using Terraform. Building automation pipelines and Python tooling for infrastructure management. Implementing observability solutions and reliability engineering practices.</p>
+                    <p class="exp-description">
+                        Building AWS Bedrock agent infrastructure for enterprise AI applications. Designed and implemented <span class="highlight">AgentCore</span> orchestration layer for multi-agent workflows. Created <span class="highlight">knowledge base</span> pipelines using S3 + OpenSearch for semantic search capabilities. Implemented RAG (Retrieval Augmented Generation) patterns with Bedrock Knowledge Bases. Built Terraform modules for reproducible AI infrastructure deployment. Implemented observability for AI systems using Prometheus, Grafana, and custom logging.
+                    </p>
+                </div>
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <span class="exp-title">Platform Engineer</span>
+                        <span class="exp-period">Previous</span>
+                    </div>
+                    <p class="exp-company">Travelport</p>
+                    <p class="exp-description">
+                        Designed and maintained cloud infrastructure using Terraform. Built automation pipelines and Python tooling for infrastructure management. Implemented observability solutions and reliability engineering practices.
+                    </p>
                 </div>
             </div>
         </section>
@@ -431,11 +580,22 @@
             <h2>Technical Skills</h2>
             <div class="skills-grid">
                 <div class="skill-category">
+                    <h3>AWS AI Services</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">Bedrock Agents</span>
+                        <span class="skill-tag">Bedrock Knowledge Bases</span>
+                        <span class="skill-tag">AgentCore</span>
+                        <span class="skill-tag">Lambda</span>
+                        <span class="skill-tag">API Gateway</span>
+                    </div>
+                </div>
+                <div class="skill-category">
                     <h3>Infrastructure as Code</h3>
                     <div class="skill-list">
                         <span class="skill-tag">Terraform</span>
                         <span class="skill-tag">HCL</span>
                         <span class="skill-tag">Terragrunt</span>
+                        <span class="skill-tag">CloudFormation</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -443,6 +603,7 @@
                     <div class="skill-list">
                         <span class="skill-tag">Python</span>
                         <span class="skill-tag">Bash</span>
+                        <span class="skill-tag">Pytest</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -453,10 +614,20 @@
                     </div>
                 </div>
                 <div class="skill-category">
+                    <h3>Vector & Search</h3>
+                    <div class="skill-list">
+                        <span class="skill-tag">OpenSearch Serverless</span>
+                        <span class="skill-tag">Amazon OpenSearch</span>
+                        <span class="skill-tag">S3</span>
+                        <span class="skill-tag">Aurora</span>
+                    </div>
+                </div>
+                <div class="skill-category">
                     <h3>Containers</h3>
                     <div class="skill-list">
                         <span class="skill-tag">Docker</span>
                         <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">ECS/Fargate</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -464,23 +635,16 @@
                     <div class="skill-list">
                         <span class="skill-tag">Prometheus</span>
                         <span class="skill-tag">Grafana</span>
-                        <span class="skill-tag">ELK Stack</span>
+                        <span class="skill-tag">CloudWatch</span>
+                        <span class="skill-tag">X-Ray</span>
                     </div>
                 </div>
                 <div class="skill-category">
                     <h3>CI/CD</h3>
                     <div class="skill-list">
                         <span class="skill-tag">GitHub Actions</span>
-                        <span class="skill-tag">GitLab CI</span>
+                        <span class="skill-tag">CodePipeline</span>
                         <span class="skill-tag">Jenkins</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Databases</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">Redis</span>
-                        <span class="skill-tag">MongoDB</span>
                     </div>
                 </div>
             </div>
@@ -490,8 +654,28 @@
             <h2>Key Projects</h2>
             <div class="projects-grid">
                 <div class="project-item">
+                    <h3 class="project-title">Bedrock Agent Infrastructure</h3>
+                    <p class="project-description">Built production-ready AWS Bedrock agent infrastructure with custom AgentCore orchestration for enterprise workflows. Implemented multi-agent collaboration patterns and secure API integrations.</p>
+                    <div class="project-tech">
+                        <span>AWS Bedrock</span>
+                        <span>AgentCore</span>
+                        <span>Lambda</span>
+                        <span>Python</span>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h3 class="project-title">Knowledge Base Pipeline</h3>
+                    <p class="project-description">Designed and implemented RAG pipelines using Bedrock Knowledge Bases with S3 storage and OpenSearch Serverless vector search for semantic document retrieval.</p>
+                    <div class="project-tech">
+                        <span>Bedrock KB</span>
+                        <span>OpenSearch</span>
+                        <span>S3</span>
+                        <span>Terraform</span>
+                    </div>
+                </div>
+                <div class="project-item">
                     <h3 class="project-title">Multi-Cloud Infrastructure Automation</h3>
-                    <p class="project-description">Built Terraform modules for reusable, production-ready infrastructure patterns across AWS and Azure environments.</p>
+                    <p class="project-description">Built Terraform modules for reusable, production-ready infrastructure patterns across AWS and Azure environments. Implemented infrastructure testing with checkov.</p>
                     <div class="project-tech">
                         <span>Terraform</span>
                         <span>Python</span>
@@ -500,30 +684,23 @@
                     </div>
                 </div>
                 <div class="project-item">
-                    <h3 class="project-title">Infrastructure Testing Framework</h3>
-                    <p class="project-description">Developed Python-based testing framework for Terraform configurations using pytest and checkov.</p>
-                    <div class="project-tech">
-                        <span>Python</span>
-                        <span>Terraform</span>
-                        <span>Pytest</span>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">GitOps Deployment Pipeline</h3>
-                    <p class="project-description">Implemented automated infrastructure deployments using GitHub Actions and Terraform Cloud.</p>
-                    <div class="project-tech">
-                        <span>Terraform Cloud</span>
-                        <span>GitHub Actions</span>
-                        <span>Kubernetes</span>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">Monitoring & Alerting Dashboard</h3>
-                    <p class="project-description">Created Grafana dashboards and Prometheus alerting rules for infrastructure health monitoring.</p>
+                    <h3 class="project-title">AI Observability Platform</h3>
+                    <p class="project-description">Created comprehensive monitoring for AI agents using Prometheus, Grafana, and AWS X-Ray. Built custom dashboards for tracking agent performance, token usage, and latency metrics.</p>
                     <div class="project-tech">
                         <span>Prometheus</span>
                         <span>Grafana</span>
+                        <span>X-Ray</span>
                         <span>Python</span>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h3 class="project-title">System Design for AWS Cloud Platform</h3>
+                    <p class="project-description">Architected scalable AWS cloud platform infrastructure with VPC design, private subnets, security groups, IAM policies, and cost-optimized resource allocation using Terraform.</p>
+                    <div class="project-tech">
+                        <span>AWS VPC</span>
+                        <span>IAM</span>
+                        <span>Terraform</span>
+                        <span>CloudWatch</span>
                     </div>
                 </div>
             </div>
@@ -532,6 +709,14 @@
         <section>
             <h2>Certifications</h2>
             <div class="certs-list">
+                <div class="cert-item">
+                    <div class="cert-icon">AWS</div>
+                    <div class="cert-info">
+                        <div class="cert-name">AWS Solutions Architect Professional</div>
+                        <div class="cert-issuer">Amazon Web Services</div>
+                    </div>
+                    <span class="cert-status">2025</span>
+                </div>
                 <div class="cert-item">
                     <div class="cert-icon">AWS</div>
                     <div class="cert-info">
@@ -549,7 +734,7 @@
                     <span class="cert-status">2023</span>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">AWS</div>
+                    <div class="cert-icon">CKA</div>
                     <div class="cert-info">
                         <div class="cert-name">Certified Kubernetes Administrator</div>
                         <div class="cert-issuer">CNCF</div>
@@ -562,8 +747,39 @@
     
     <footer>
         <div class="container">
-            <p>&copy; 2026 Kevin Crowley. Open to SRE and Platform Engineering roles. Terraform & Python.</p>
+            <p>&copy; 2026 Kevin Crowley. Platform Engineer specializing in AWS Bedrock Agents, AgentCore, and Cloud Infrastructure.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+
+            if (html.getAttribute('data-theme') === 'light') {
+                html.removeAttribute('data-theme');
+                icon.innerHTML = '&#9790;';
+                text.innerText = 'Light';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                icon.innerHTML = '&#9728;';
+                text.innerText = 'Dark';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('themeIcon').innerHTML = '&#9728;';
+                document.getElementById('themeText').innerText = 'Dark';
+            }
+        })();
+    </script>
 </body>
 </html>
