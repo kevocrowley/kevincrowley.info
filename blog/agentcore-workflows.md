@@ -1,116 +1,70 @@
-# AgentCore: Orchestrating Multi-Agent Workflows on AWS
+# Level 2 On-Call: Incident Response Best Practices
 
-Building complex AI applications often requires multiple specialized agents working together. This post covers how to design and implement a custom orchestration layer using AgentCore with AWS Bedrock Agents.
+As an SRE providing Level 2 on-call support, having a solid incident response process is critical. This post covers best practices for handling production incidents effectively.
 
-## What is AgentCore?
-
-AgentCore is a custom orchestration framework we built to coordinate multiple Bedrock Agents. It handles:
-- Task decomposition and routing
-- Agent communication and state management
-- Error handling and retry logic
-- Result aggregation
-
-## Architecture
+## Incident Response Flow
 
 ```
-┌─────────────┐
-│   User      │
-└──────┬──────┘
-       │
-┌──────▼──────┐
-│  API Gateway│
-└──────┬──────┘
-       │
-┌──────▼──────────┐
-│  AgentCore      │  <- Custom orchestration layer
-│  (Lambda)       │
-└───────┬─────────┘
-        │
-   ┌────┴────┬────────┐
-   ▼         ▼        ▼
-┌──────┐ ┌──────┐ ┌──────┐
-│Search│ │Code  │ │Data  │
-│Agent │ │Agent │ │Agent │
-└──────┘ └──────┘ └──────┘
+Detect -> Triage -> Mitigate -> Resolve -> Post-Mortem
 ```
 
-## Implementing AgentCore
+## Detection & Triage
 
-### 1. Define Agent Configuration
+When an alert fires, follow this checklist:
 
-```python
-AGENTS = {
-    'search': {
-        'agent_id': 'search-agent-id',
-        'instructions': 'You are a research assistant...'
-    },
-    'code': {
-        'agent_id': 'code-agent-id', 
-        'instructions': 'You are a coding assistant...'
-    },
-    'data': {
-        'agent_id': 'data-agent-id',
-        'instructions': 'You analyze data and provide insights...'
-    }
-}
+1. **Acknowledge the alert** in PagerDuty within SLA window
+2. **Assess impact** - Is this user-facing? Revenue-impacting?
+3. **Gather context** - Check Datadog/Grafana dashboards, recent deployments
+4. **Determine severity** - P1/P2/P3/P4
+
+## Quick Mitigation Steps
+
+```bash
+# Check current system state
+aws ec2 describe-instance-status --instance-ids i-xxx
+
+# Check application health
+curl -f https://api.example.com/health
+
+# Review recent logs
+aws logs filter-log-events --log-group /aws/ecs/app --filter-pattern "ERROR"
 ```
 
-### 2. Task Routing Logic
+## Communication Template
 
-```python
-def route_task(task: str) -> str:
-    """Route task to appropriate agent based on intent."""
-    intent = classify_intent(task)
-    
-    if intent == 'research':
-        return 'search'
-    elif intent == 'code':
-        return 'code'
-    elif intent == 'data_analysis':
-        return 'data'
-    else:
-        return 'general'
+```markdown
+# Incident: [Brief Title]
+Severity: P2
+Status: Investigating
+Impact: 15% of users experiencing slow response times
+
+Timeline:
+- 14:00 - Alert triggered (high latency)
+- 14:05 - Acknowledge alert
+- 14:15 - Identified DB connection pool exhaustion
+- 14:20 - Scaling up RDS instance
+
+Next Steps:
+- Continue monitoring
+- Update status page
+- Schedule post-mortem
 ```
 
-### 3. Multi-Agent Collaboration
+## Post-Mortem Template
 
-```python
-async def execute_workflow(task: str) -> dict:
-    """Execute multi-step workflow across agents."""
-    results = {}
-    
-    # Step 1: Research
-    search_result = await invoke_agent('search', task)
-    results['research'] = search_result
-    
-    # Step 2: Code generation based on research
-    code_result = await invoke_agent(
-        'code', 
-        f"Based on: {search_result}. {task}"
-    )
-    results['code'] = code_result
-    
-    # Step 3: Data validation
-    data_result = await invoke_agent(
-        'data',
-        f"Validate: {code_result}"
-    )
-    results['validation'] = data_result
-    
-    return aggregate_results(results)
-```
+1. **Summary**: What happened and impact
+2. **Timeline**: Detailed sequence of events
+3. **Root Cause**: Why did this happen?
+4. **Corrective Actions**: What will we fix?
+5. **Prevention**: How to prevent recurrence?
 
-## Best Practices
+## Key Takeaways
 
-1. **Clear Agent Boundaries**: Each agent should have a specific, limited scope
-2. **State Management**: Use a persistent store (DynamoDB) for workflow state
-3. **Error Handling**: Implement circuit breakers for failing agents
-4. **Observability**: Log every agent invocation and response
-
-## Conclusion
-
-AgentCore enables sophisticated multi-agent workflows that go beyond what a single Bedrock Agent can achieve. The key is proper architecture and clear communication patterns between agents.
+- Always document during incident, not after
+- Focus on blameless post-mortems
+- Automate detection and remediation where possible
+- Practice incident scenarios regularly
 
 ---
 
-*Tags: AWS, Bedrock, AgentCore, AI*
+*Tags: SRE, On-Call, Incident Response, DevOps*

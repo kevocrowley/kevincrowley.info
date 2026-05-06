@@ -1,213 +1,135 @@
-# Observability for AWS Bedrock Agents
+# Datadog Observability for Production Systems
 
-Monitoring AI agents requires more than traditional infrastructure metrics. This post covers implementing comprehensive observability for Bedrock Agents using Prometheus, Grafana, and AWS X-Ray.
+Setting up comprehensive observability is critical for maintaining 99.9% uptime. This guide covers implementing Datadog monitoring for AWS infrastructure.
 
-## Key Metrics to Track
+## Datadog Agent Installation
 
-1. **Agent Invocation Metrics**
-   - Request count and rate
-   - Latency (p50, p95, p99)
-   - Error rate and types
-   - Success/failure ratio
+```yaml
+# datadog-agent.yaml (Kubernetes DaemonSet)
 
-2. **Cost Metrics**
-   - Token usage (input/output)
-   - API request costs
-   - Knowledge base queries
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: datadog-agent
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: datadog-agent
+  template:
+    spec:
+      containers:
+      - name: datadog-agent
+        image: datadog/agent:latest
+        env:
+        - name: DD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: datadog-secret
+              key: api-key
+        - name: DD_SITE
+          value: "datadoghq.eu"
+        - name: DD_APM_ENABLED
+          value: "true"
+        - name: DD_LOGS_ENABLED
+          value: "true"
+        volumeMounts:
+        - name: dockersocket
+          mountPath: /var/run/docker.sock
+```
 
-3. **Quality Metrics**
-   - Retrieval precision
-   - Response accuracy (if measurable)
-   - User satisfaction scores
+## AWS Integration
 
-## Implementation
+```hcl
+# datadog-aws.tf
 
-### 1. CloudWatch Metrics for Bedrock
+resource "datadog_integration_aws" "main" {
+  account_id  = var.aws_account_id
+  role_name   = "DatadogAWSIntegrationRole"
+
+  # Enable specific integrations
+  services {
+    enabled = true
+  }
+
+  # Filter specific regions
+  excluded_regions = ["us-gov-west-1", "us-gov-east-1"]
+
+  tags = ["production", "eu-west-1"]
+}
+```
+
+## Custom Metrics
 
 ```python
-import boto3
-import json
-from datetime import datetime
+# custom-metrics.py
 
-class BedrockMetrics:
-    def __init__(self):
-        self.cloudwatch = boto3.client('cloudwatch')
-        self.namespace = 'AWS/Bedrock'
+from datadog import DogStatsd
+
+statsd = DogStatsd(host="localhost", port=8125)
+
+def record_request_metrics(method, status_code, latency_ms):
+    # Increment counter
+    statsd.increment(
+        "app.requests.count",
+        tags=["method:" + method, "status:" + str(status_code)]
+    )
     
-    def put_agent_metrics(self, agent_id, metrics):
-        """Custom metrics for agent performance."""
-        metric_data = [
-            {
-                'MetricName': 'InvocationLatency',
-                'Value': metrics['latency_ms'],
-                'Unit': 'Milliseconds',
-                'Dimensions': [
-                    {'Name': 'AgentId', 'Value': agent_id}
-                ]
-            },
-            {
-                'MetricName': 'TokenCount',
-                'Value': metrics['tokens'],
-                'Unit': 'Count',
-                'Dimensions': [
-                    {'Name': 'AgentId', 'Value': agent_id}
-                ]
-            },
-            {
-                'MetricName': 'InvocationSuccess',
-                'Value': 1 if metrics['success'] else 0,
-                'Unit': 'Count',
-                'Dimensions': [
-                    {'Name': 'AgentId', 'Value': agent_id}
-                ]
-            }
-        ]
-        
-        self.cloudwatch.put_metric_data(
-            Namespace=self.namespace,
-            MetricData=metric_data
-        )
+    # Record latency histogram
+    statsd.histogram(
+        "app.request.latency",
+        latency_ms,
+        tags=["method:" + method]
+    )
+
+# Usage
+record_request_metrics("GET", 200, 45.6)
 ```
 
-### 2. Lambda Layer for X-Ray Tracing
-
-```python
-import boto3
-import json
-import traceback
-
-# Enable X-Ray tracing
-from aws_xray_sdk.core import patch_all
-patch_all()
-
-bedrock = boto3.client('bedrock-runtime')
-
-def lambda_handler(event, context):
-    # Start custom segment
-    with xray_recorder.capture('bedrock-agent-invoke') as segment:
-        try:
-            agent_id = event['agent_id']
-            prompt = event['prompt']
-            
-            # Add metadata
-            segment.put_metadata('agent_id', agent_id)
-            segment.put_metadata('prompt_length', len(prompt))
-            
-            # Invoke Bedrock Agent
-            with xray_recorder.capture('bedrock-invoke'):
-                response = bedrock.invoke_agent(
-                    agentId=agent_id,
-                    sessionId=context.aws_request_id,
-                    prompt=prompt
-                )
-            
-            # Extract and record response details
-            completion = response['completion']
-            token_count = estimate_tokens(completion)
-            
-            segment.put_metadata('response_tokens', token_count)
-            
-            return {
-                'statusCode': 200,
-                'body': json.dumps({
-                    'completion': completion,
-                    'token_count': token_count
-                })
-            }
-            
-        except Exception as e:
-            segment.put_metadata('error', str(e))
-            segment.put_metadata('traceback', traceback.format_exc())
-            raise
-```
-
-### 3. Grafana Dashboard Configuration
+## Alert Configuration
 
 ```json
 {
-  "dashboard": {
-    "title": "Bedrock Agent Observability",
-    "panels": [
-      {
-        "title": "Agent Invocation Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "sum(rate(bedrock_agent_invocations[5m])) by (agent_id)",
-            "legendFormat": "{{agent_id}}"
-          }
-        ]
-      },
-      {
-        "title": "Token Usage",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "sum(rate(bedrock_token_count[5m])) by (type)",
-            "legendFormat": "{{type}}"
-          }
-        ]
-      },
-      {
-        "title": "Latency p95",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, rate(bedrock_latency_bucket[5m]))",
-            "legendFormat": "p95"
-          }
-        ]
-      },
-      {
-        "title": "Error Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "sum(rate(bedrock_errors[5m])) by (error_type) / sum(rate(bedrock_invocations[5m]))",
-            "legendFormat": "{{error_type}}"
-          }
-        ]
-      }
-    ]
+  "name": "High Error Rate",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:app.errors.count{env:production}.as_count() > 100",
+  "message": "@pagerduty-sre-team High error rate detected on production. Please investigate.",
+  "priority": "high",
+  "options": {
+    "threshold_windows": {
+      "recovery_window": "last_10m",
+      "trigger_window": "last_5m"
+    }
   }
 }
 ```
 
-## Alerting Rules
+## Dashboard Example
 
-```yaml
-groups:
-- name: bedrock-alerts
-  rules:
-  - alert: HighAgentLatency
-    expr: histogram_quantile(0.95, rate(bedrock_latency_bucket[5m])) > 10000
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      summary: "High agent latency detected"
-      
-  - alert: HighErrorRate
-    expr: sum(rate(bedrock_errors[5m])) / sum(rate(bedrock_invocations[5m])) > 0.05
-    for: 2m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Agent error rate exceeds 5%"
-      
-  - alert: HighTokenUsage
-    expr: sum(rate(bedrock_token_count[1h])) > 1000000
-    for: 10m
-    labels:
-      severity: warning
-    annotations:
-      summary: "High token usage detected"
+Create comprehensive dashboards showing:
+- Request rate and latency percentiles
+- Error rates by endpoint
+- CPU/Memory utilization
+- Database connection pool status
+- External service dependencies health
+
+## SLO Configuration
+
+```hcl
+# datadog-slo.tf
+
+resource "datadog_service_level_objective" "api_availability" {
+  name        = "API Availability"
+  type        = "metric"
+  query       = "sum(last 1h):sum:app.requests.count{status:200}.as_count() / sum(last 1h):sum:app.requests.count.as_count()"
+  
+  target        = 99.9
+  error_budget = 0.1
+  
+  tags = ["env:production", "service:api"]
+}
 ```
-
-## Conclusion
-
-Comprehensive observability for AI agents requires tracking metrics beyond traditional infrastructure monitoring. X-Ray tracing provides valuable insights into agent execution flow, while custom CloudWatch metrics enable cost and quality tracking.
 
 ---
 
-*Tags: Observability, AWS, Bedrock, Prometheus*
+*Tags: Datadog, Observability, SRE, Monitoring*
