@@ -1,189 +1,111 @@
-# Terraform Modules for Production AI Infrastructure
+# MongoDB Atlas Infrastructure with Terraform
 
-Infrastructure as Code is essential for deploying AI services reproducibly. This post covers best practices for creating production-ready Terraform modules for AWS AI infrastructure.
+Managing MongoDB Atlas clusters with Terraform ensures reproducible, version-controlled database infrastructure. This guide covers creating and managing MongoDB Atlas resources with Terraform.
 
-## Module Structure
-
-Organize your Terraform modules for AI infrastructure:
-
-```
-modules/
-├── bedrock-agent/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   └── README.md
-├── knowledge-base/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-└── ai-vpc/
-    ├── main.tf
-    ├── variables.tf
-    └── outputs.tf
-```
-
-## Bedrock Agent Module Example
+## Provider Configuration
 
 ```hcl
-# modules/bedrock-agent/main.tf
+# providers.tf
 
-resource "aws_bedrock_agent" "this" {
-  agent_name        = var.agent_name
-  agent_description = var.description
-  iam_role_arn      = aws_iam_role.agent.arn
-
-  instruction = var.instructions
-
-  foundation_model = var.model_id
-
-  # Enable trace for debugging
-  foundation_model_configuration {
-    model_id = var.model_id
-  }
-
-  # Agent knowledge base associations
-  dynamic "knowledge_base" {
-    for_each = var.knowledge_base_ids
-    content {
-      knowledge_base_id = knowledge_base.value
-      description       = "Associated knowledge base"
+terraform {
+  required_providers {
+    mongodbatlas = {
+      source  = "mongodb/mongodbatlas"
+      version = "~> 1.8"
     }
   }
 }
 
-resource "aws_iam_role" "agent" {
-  name = "${var.agent_name}-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "bedrock.amazonaws.com"
-      }
-    }]
-  })
-}
-
-resource "aws_iam_role_policy" "agent_policy" {
-  name = "${var.agent_name}-policy"
-  role = aws_iam_role.agent.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "bedrock:InvokeAgent",
-          "bedrock:Retrieve"
-        ]
-      }
-    ]
-  })
+provider "mongodbatlas" {
+  public_key  = var.public_key
+  private_key = var.private_key
 }
 ```
 
-```hcl
-# modules/bedrock-agent/variables.tf
-
-variable "agent_name" {
-  description = "Name of the Bedrock agent"
-  type        = string
-}
-
-variable "description" {
-  description = "Agent description"
-  type        = string
-  default     = ""
-}
-
-variable "instructions" {
-  description = "System instructions for the agent"
-  type        = string
-  default     = ""
-}
-
-variable "model_id" {
-  description = "Foundation model ID"
-  type        = string
-  default     = "anthropic.claude-3-sonnet-20240229-v1:0"
-}
-
-variable "knowledge_base_ids" {
-  description = "List of knowledge base IDs to associate"
-  type        = list(string)
-  default     = []
-}
-```
-
-## Using the Module
+## Creating a Cluster
 
 ```hcl
 # main.tf
 
-module "ai_agents" {
-  source = "./modules/bedrock-agent"
+resource "mongodbatlas_cluster" "main" {
+  project_id   = var.project_id
+  name         = var.cluster_name
+  cluster_type = "REPLICASET"
+  provider_name = "AWS"
 
-  agent_name    = "customer-support-agent"
-  description   = "AI agent for customer support"
-  instructions  = <<-EOF
-    You are a helpful customer support agent.
-    Be concise and professional in your responses.
-  EOF
-  model_id      = "anthropic.claude-3-sonnet-20240229-v1:0"
-  
-  knowledge_base_ids = [module.knowledge_base.kb_id]
-}
+  # Backup configuration
+  cloud_backup = true
 
-module "knowledge_base" {
-  source = "./modules/knowledge-base"
+  # Auto-scaling
+  auto_scaling_disk_gb_enabled = true
 
-  kb_name        = "product-docs-kb"
-  embedding_model = "amazon.titan-embed-text-v1"
-  s3_bucket      = aws_s3_bucket.documents.id
-}
-```
+  # Instance size
+  provider_instance_size_name = "M10"
 
-## Testing with Terratest
+  # AWS region
+  provider_region_name = "EU_WEST_1"
 
-```go
-// tests/bedrock_agent_test.go
-
-package test
-
-import (
-    "testing"
-    "github.com/gruntwork-io/terratest/modules/terraform"
-    "github.com/stretchr/testify/assert"
-)
-
-func TestBedrockAgent(t *testing.T) {
-    terraformOptions := &terraform.Options{
-        TerraformDir: "../examples/bedrock-agent",
-        Vars: map[string]interface{}{
-            "agent_name": "test-agent",
-        },
+  # Replication
+  replication_specs {
+    num_shards = 1
+    regions_config {
+      region_name       = "EU_WEST_1"
+      electable_nodes   = 3
+      priority          = 7
+      read_only_nodes   = 0
     }
+  }
 
-    defer terraform.Destroy(t, terraformOptions)
-    terraform.InitAndApply(t, terraformOptions)
-
-    // Verify agent was created
-    agentID := terraform.Output(t, terraformOptions, "agent_id")
-    assert.NotEmpty(t, agentID)
+  tags = var.common_tags
 }
 ```
 
-## Key Best Practices
+## Network Peering
 
-1. **Use Terragrunt** for environment-specific configurations
-2. **Enable drift detection** to catch manual changes
-3. **Implement policy-as-code** with checkov
-4. **Use remote state** with proper locking (DynamoDB)
+```hcl
+# network-peering.tf
+
+resource "mongodbatlas_network_peering" "aws" {
+  project_id       = var.project_id
+  provider_name    = "AWS"
+  account_id       = var.aws_account_id
+  vpc_id           = var.vpc_id
+  route_table_id   = var.route_table_id
+  cluster_name     = mongodbatlas_cluster.main.name
+}
+```
+
+## Database User
+
+```hcl
+# database-user.tf
+
+resource "mongodbatlas_database_user" "app" {
+  username        = "app_user"
+  password        = var.db_password
+  project_id      = var.project_id
+
+  auth_database_name = "admin"
+
+  roles {
+    role_name     = "readWriteAnyDatabase"
+    database_name = "admin"
+  }
+
+  labels {
+    key   = "environment"
+    value = var.environment
+  }
+}
+```
+
+## Key Considerations
+
+1. **Use IP whitelisting** for development, Private Link for production
+2. **Enable Cloud Backup** for disaster recovery
+3. **Configure alerts** for CPU, storage, and connection metrics
+4. **Use IaC** for all database changes - no manual modifications
 
 ---
 
-*Tags: Terraform, IaC, AWS, Infrastructure*
+*Tags: MongoDB Atlas, Terraform, Database, AWS*
