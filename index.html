@@ -7,6 +7,7 @@
     <meta name="description" content="Platform Engineer specializing in AWS Bedrock Agents, AgentCore, and cloud infrastructure automation. Building reliable, scalable AI systems.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -510,6 +511,74 @@
             font-size: 0.8rem;
         }
 
+        .blog-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: -12px;
+            margin-bottom: 24px;
+        }
+
+        .blog-content h1, .blog-content h2, .blog-content h3 {
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .blog-content h1 { font-size: 1.5rem; }
+        .blog-content h2 { font-size: 1.25rem; }
+        .blog-content h3 { font-size: 1.1rem; }
+
+        .blog-content p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        .blog-content code {
+            background: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+
+        .blog-content pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .blog-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        .blog-content ul, .blog-content ol {
+            color: var(--text-secondary);
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .blog-content li {
+            margin-bottom: 8px;
+        }
+
+        .blog-content a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .blog-content a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -842,30 +911,97 @@
             }
         })();
 
-        // Load blog posts
-        async function loadBlogPosts() {
-            try {
-                const response = await fetch('blog-posts.json');
-                const posts = await response.json();
-                const blogGrid = document.getElementById('blogGrid');
-                
-                if (posts.length === 0) {
-                    blogGrid.innerHTML = '<p class="summary">No blog posts yet.</p>';
-                    return;
-                }
+        // Blog configuration - add new posts here
+        const blogPosts = [
+            {
+                slug: 'rag-pipelines-bedrock',
+                title: 'Building RAG Pipelines with AWS Bedrock Knowledge Bases',
+                date: '2025-12-15',
+                excerpt: 'A deep dive into implementing Retrieval Augmented Generation using Bedrock Knowledge Bases with OpenSearch Serverless for semantic search.',
+                tags: ['AWS', 'Bedrock', 'RAG', 'OpenSearch']
+            },
+            {
+                slug: 'agentcore-workflows',
+                title: 'AgentCore: Orchestrating Multi-Agent Workflows on AWS',
+                date: '2025-11-28',
+                excerpt: 'How to design and implement a custom orchestration layer for complex multi-agent AI workflows using AWS Bedrock Agents.',
+                tags: ['AWS', 'Bedrock', 'AgentCore', 'AI']
+            },
+            {
+                slug: 'terraform-ai-infrastructure',
+                title: 'Terraform Modules for Production AI Infrastructure',
+                date: '2025-10-20',
+                excerpt: 'Best practices for creating reusable, production-ready Terraform modules for deploying AI services on AWS.',
+                tags: ['Terraform', 'IaC', 'AWS', 'Infrastructure']
+            },
+            {
+                slug: 'bedrock-observability',
+                title: 'Observability for AWS Bedrock Agents',
+                date: '2025-09-12',
+                excerpt: 'Implementing comprehensive monitoring and tracing for AI agents using Prometheus, Grafana, and AWS X-Ray.',
+                tags: ['Observability', 'AWS', 'Bedrock', 'Prometheus']
+            }
+        ];
 
-                blogGrid.innerHTML = posts.map(post => `
-                    <article class="blog-item" onclick="window.open('${post.url}', '_blank')">
-                        <p class="blog-date">${post.date}</p>
-                        <h3 class="blog-title">${post.title}</h3>
-                        <p class="blog-excerpt">${post.excerpt}</p>
-                        <div class="blog-tags">
-                            ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
-                        </div>
-                    </article>
-                `).join('');
-            } catch (error) {
-                document.getElementById('blogGrid').innerHTML = '<p class="summary">No blog posts yet.</p>';
+        // Load and render blog posts from markdown
+        async function loadBlogPosts() {
+            const blogGrid = document.getElementById('blogGrid');
+            
+            if (blogPosts.length === 0) {
+                blogGrid.innerHTML = '<p class="summary">No blog posts yet.</p>';
+                return;
+            }
+
+            // Fetch all markdown files
+            const postContents = await Promise.all(
+                blogPosts.map(async (post) => {
+                    try {
+                        const response = await fetch(`blog/${post.slug}.md`);
+                        const markdown = await response.text();
+                        return { ...post, content: markdown };
+                    } catch (e) {
+                        return null;
+                    }
+                })
+            );
+
+            const validPosts = postContents.filter(p => p !== null);
+            
+            if (validPosts.length === 0) {
+                blogGrid.innerHTML = '<p class="summary">No blog posts available.</p>';
+                return;
+            }
+
+            blogGrid.innerHTML = validPosts.map(post => `
+                <article class="blog-item" onclick="toggleBlogPost('${post.slug}')">
+                    <p class="blog-date">${post.date}</p>
+                    <h3 class="blog-title">${post.title}</h3>
+                    <p class="blog-excerpt">${post.excerpt}</p>
+                    <div class="blog-tags">
+                        ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                    </div>
+                </article>
+                <div id="blog-content-${post.slug}" class="blog-content" style="display: none;"></div>
+            `).join('');
+        }
+
+        // Toggle blog post expansion
+        async function toggleBlogPost(slug) {
+            const contentDiv = document.getElementById(`blog-content-${slug}`);
+            
+            if (contentDiv.style.display === 'none') {
+                // Fetch and render the markdown
+                try {
+                    const response = await fetch(`blog/${slug}.md`);
+                    const markdown = await response.text();
+                    contentDiv.innerHTML = marked.parse(markdown);
+                    contentDiv.style.display = 'block';
+                } catch (e) {
+                    contentDiv.innerHTML = '<p class="summary">Error loading post.</p>';
+                    contentDiv.style.display = 'block';
+                }
+            } else {
+                contentDiv.style.display = 'none';
             }
         }
 
