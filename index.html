@@ -456,6 +456,60 @@
             font-size: 1.5rem;
         }
 
+        /* Blog Section */
+        .blog-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .blog-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .blog-item:hover {
+            border-color: var(--accent);
+        }
+
+        .blog-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .blog-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .blog-tag {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -743,6 +797,13 @@
                 </div>
             </div>
         </section>
+
+        <section>
+            <h2>Blog</h2>
+            <div id="blogGrid" class="blog-grid">
+                <p class="summary">Loading posts...</p>
+            </div>
+        </section>
     </main>
     
     <footer>
@@ -780,6 +841,35 @@
                 document.getElementById('themeText').innerText = 'Dark';
             }
         })();
+
+        // Load blog posts
+        async function loadBlogPosts() {
+            try {
+                const response = await fetch('blog-posts.json');
+                const posts = await response.json();
+                const blogGrid = document.getElementById('blogGrid');
+                
+                if (posts.length === 0) {
+                    blogGrid.innerHTML = '<p class="summary">No blog posts yet.</p>';
+                    return;
+                }
+
+                blogGrid.innerHTML = posts.map(post => `
+                    <article class="blog-item" onclick="window.open('${post.url}', '_blank')">
+                        <p class="blog-date">${post.date}</p>
+                        <h3 class="blog-title">${post.title}</h3>
+                        <p class="blog-excerpt">${post.excerpt}</p>
+                        <div class="blog-tags">
+                            ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                        </div>
+                    </article>
+                `).join('');
+            } catch (error) {
+                document.getElementById('blogGrid').innerHTML = '<p class="summary">No blog posts yet.</p>';
+            }
+        }
+
+        loadBlogPosts();
     </script>
 </body>
 </html>
