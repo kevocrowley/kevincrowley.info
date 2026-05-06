@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name }} - {{ profile.title }}</title>
+    <meta name="description" content="Platform Engineer specializing in Terraform and Python for cloud infrastructure automation. Looking for SRE and platform engineering opportunities.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #18181f;
+            --border: #27272a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-muted: rgba(59, 130, 246, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            padding: 80px 0 60px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        
+        .header-left h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        
+        .title {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .location {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .header-right {
+            flex-shrink: 0;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .contact-links a:hover {
+            color: var(--accent);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        main {
+            padding: 60px 0;
+        }
+        
+        section {
+            margin-bottom: 56px;
+        }
+        
+        section:last-child {
+            margin-bottom: 0;
+        }
+        
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .summary {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        
+        .experience-item {
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            position: relative;
+        }
+        
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+        
+        .exp-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .exp-period {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .exp-company {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .exp-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .skill-category h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .skill-tag {
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+        
+        .project-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .project-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .project-tech span {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .certs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+        
+        .cert-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-muted);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
+        .cert-info {
+            flex: 1;
+        }
+        
+        .cert-name {
+            font-weight: 600;
+        }
+        
+        .cert-issuer {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .cert-status {
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                width: 100%;
+            }
+            
+            .contact-links {
+                align-items: flex-start;
+            }
+            
+            .cta-buttons {
+                justify-content: flex-start;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>{{ profile.name }}</h1>
+                    <p class="title">{{ profile.title }}</p>
+                    <p class="location">{{ profile.location }}</p>
+                </div>
+                <div class="header-right">
+                    <div class="contact-links">
+                        <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                        <a href="{{ profile.linkedin }}" target="_blank">LinkedIn</a>
+                        {% if profile.github %}
+                        <a href="{{ profile.github }}" target="_blank">GitHub</a>
+                        {% endif %}
+                        <a href="https://github.com/kevocrowley?tab=repositories" target="_blank">GitHub Repos</a>
+                    </div>
+                    <div class="cta-buttons">
+                        <a href="{{ profile.linkedin }}" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
+                        <a href="mailto:{{ profile.email }}" class="btn btn-secondary">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section>
+            <h2>About</h2>
+            <p class="summary">{{ profile.summary }}</p>
+        </section>
+        
+        <section>
+            <h2>Experience</h2>
+            <div class="experience-list">
+                {% for exp in experience %}
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <span class="exp-title">{{ exp.title }}</span>
+                        <span class="exp-period">{{ exp.period }}</span>
+                    </div>
+                    <p class="exp-company">{{ exp.company }}</p>
+                    <p class="exp-description">{{ exp.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section>
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                {% for category, items in skills.items() %}
+                <div class="skill-category">
+                    <h3>{{ category }}</h3>
+                    <div class="skill-list">
+                        {% for skill in items %}
+                        <span class="skill-tag">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section>
+            <h2>Key Projects</h2>
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-item">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+                    <div class="project-tech">
+                        {% for tech in project.tech %}
+                        <span>{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 {{ profile.name }}. Open to SRE and Platform Engineering roles. Terraform & Python.</p>
+        </div>
+    </footer>
+</body>
+</html>
