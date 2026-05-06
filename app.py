@@ -41,9 +41,8 @@ def index():
         'Infrastructure as Code': ['Terraform', 'HCL', 'Terragrunt'],
         'Programming': ['Python', 'Bash'],
         'Cloud Platforms': ['AWS', 'Azure'],
-        'Containers': ['Docker', 'Kubernetes'],
-        'Observability': ['Prometheus', 'Grafana', 'ELK Stack'],
-        'CI/CD': ['GitHub Actions', 'GitLab CI', 'Jenkins'],
+        'Observability': ['Prometheus', 'Grafana', 'ELK Stack', 'Datadog'],
+        'CI/CD': ['GitHub Actions', 'Jenkins'],
         'Databases': ['PostgreSQL', 'Redis', 'MongoDB'],
     }
     

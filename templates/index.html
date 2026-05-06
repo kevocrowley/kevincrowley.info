@@ -395,11 +395,12 @@
                 </div>
                 <div class="header-right">
                     <div class="contact-links">
-                        <a href="mailto:{{ profile.email }}">📧 {{ profile.email }}</a>
-                        <a href="{{ profile.linkedin }}" target="_blank">🔗 LinkedIn</a>
+                        <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                        <a href="{{ profile.linkedin }}" target="_blank">LinkedIn</a>
                         {% if profile.github %}
-                        <a href="{{ profile.github }}" target="_blank">💻 GitHub</a>
+                        <a href="{{ profile.github }}" target="_blank">GitHub</a>
                         {% endif %}
+                        <a href="https://github.com/kevocrowley?tab=repositories" target="_blank">GitHub Repos</a>
                     </div>
                     <div class="cta-buttons">
                         <a href="{{ profile.linkedin }}" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
@@ -460,22 +461,6 @@
                         <span>{{ tech }}</span>
                         {% endfor %}
                     </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        
-        <section>
-            <h2>Certifications</h2>
-            <div class="certs-list">
-                {% for cert in certifications %}
-                <div class="cert-item">
-                    <div class="cert-icon">AWS</div>
-                    <div class="cert-info">
-                        <div class="cert-name">{{ cert.name }}</div>
-                        <div class="cert-issuer">{{ cert.issuer }}</div>
-                    </div>
-                    <span class="cert-status">{{ cert.status }}</span>
                 </div>
                 {% endfor %}
             </div>
