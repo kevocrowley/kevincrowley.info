@@ -8,11 +8,11 @@ def index():
     profile = {
         "name": "Kevin Crowley",
         "title": "Platform Engineer | SRE",
-        "location": "County Meath, Ireland",
+        "location": "Dublin, Ireland",
         "company": "Travelport",
         "email": "kevincrowley@gmail.com",
         "linkedin": "https://www.linkedin.com/in/kevincrowleyin/",
-        "summary": "Platform Engineer specializing in cloud infrastructure automation using Terraform and Python. Building reliable, scalable systems with a focus on IaC, observability, and site reliability practices.",
+        "summary": "Software development-led engineer with 20+ years of experience building and supporting enterprise infrastructure. I take a developer-first approach to solving infrastructure challenges, writing code to automate, scale, and modernize systems. Proven leader of technical projects and cross-functional teams, from greenfield data center builds to large-scale cloud migrations. Deep expertise across both on-premises data centers and cloud platforms (AWS, Azure), with strong foundations in Terraform, Kubernetes, and CI/CD automation. Experienced in on-call support and building reliable, observable platforms for production environments.",
     }
 
     experience = [
