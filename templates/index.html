@@ -448,17 +448,9 @@
                     <p class="location">{{ profile.location }}</p>
                 </div>
                 <div class="header-right">
-                    <div class="contact-links">
-                        <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
-                        <a href="{{ profile.slack }}" target="_blank">Slack</a>
-                        <a href="{{ profile.linkedin }}" target="_blank">LinkedIn</a>
-                        {% if profile.github %}
-                        <a href="{{ profile.github }}" target="_blank">GitHub</a>
-                        {% endif %}
-                        <a href="https://github.com/kevocrowley?tab=repositories" target="_blank">GitHub Repos</a>
-                    </div>
                     <div class="cta-buttons">
                         <a href="/resume" class="btn btn-secondary">Download Resume</a>
+                        <a href="{{ profile.slack }}" class="btn btn-secondary" target="_blank">Message on Slack</a>
                         <a href="{{ profile.linkedin }}" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
                     </div>
                 </div>
