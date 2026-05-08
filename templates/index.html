@@ -158,6 +158,24 @@
             color: var(--accent);
         }
         
+        .btn-slack {
+            background: #4A154B;
+            color: white;
+        }
+        
+        .btn-slack:hover {
+            background: #3a1038;
+        }
+        
+        .btn-resume {
+            background: #2d7d46;
+            color: white;
+        }
+        
+        .btn-resume:hover {
+            background: #246a3a;
+        }
+        
         main {
             padding: 60px 0;
         }
@@ -449,8 +467,8 @@
                 </div>
                 <div class="header-right">
                     <div class="cta-buttons">
-                        <a href="/resume" class="btn btn-secondary">Download Resume</a>
-                        <a href="{{ profile.slack }}" class="btn btn-secondary" target="_blank">Message on Slack</a>
+                        <a href="/resume" class="btn btn-resume">Download Resume</a>
+                        <a href="{{ profile.slack }}" class="btn btn-slack" target="_blank">Message on Slack</a>
                         <a href="{{ profile.linkedin }}" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
                     </div>
                 </div>
