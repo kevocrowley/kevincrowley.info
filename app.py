@@ -1,6 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
+import os
 
 app = Flask(__name__)
+
+
+@app.route("/resume")
+def resume():
+    return send_from_directory(
+        os.path.dirname(__file__), "kevin_crowley_resume.pdf", as_attachment=True
+    )
 
 
 @app.route("/")
@@ -13,6 +21,7 @@ def index():
         "email": "kevincrowley@gmail.com",
         "linkedin": "https://www.linkedin.com/in/kevincrowleyin/",
         "slack": "https://kevincrowleyworkspace.slack.com",
+        "photo": "Photo.jpg",
         "summary": "Software development-led engineer with 20+ years of experience building and supporting enterprise infrastructure. I take a developer-first approach to solving infrastructure challenges, writing code to automate, scale, and modernize systems. Proven leader of technical projects and cross-functional teams, from greenfield data center builds to large-scale cloud migrations. Deep expertise across both on-premises data centers and cloud platforms (AWS, Azure), with strong foundations in Terraform, Kubernetes, and CI/CD automation. Known as a problem solver who gets things done, including being tasked with building out AI infrastructure in AWS to meet growing demands from SLT and developer teams. Experienced in on-call support and building reliable, observable platforms for production environments.",
     }
 
@@ -107,6 +116,11 @@ def index():
         skills=skills,
         projects=projects,
     )
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
 
 
 if __name__ == "__main__":
