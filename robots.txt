@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /
+
+User-agent: CCBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: anthropic-ai
+User-agent: cohere-ai
+User-agent: Youbot
+Disallow: /
