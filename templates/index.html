@@ -176,6 +176,15 @@
             background: #246a3a;
         }
         
+        .btn-email {
+            background: #EA4335;
+            color: white;
+        }
+        
+        .btn-email:hover {
+            background: #c5221f;
+        }
+        
         main {
             padding: 60px 0;
         }
@@ -468,6 +477,7 @@
                 <div class="header-right">
                     <div class="cta-buttons">
                         <a href="/resume" class="btn btn-resume">Download Resume</a>
+                        <a href="mailto:{{ profile.email }}" class="btn btn-email">Email Me</a>
                         <a href="{{ profile.slack }}" class="btn btn-slack" target="_blank">Message on Slack</a>
                         <a href="{{ profile.linkedin }}" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
                     </div>
