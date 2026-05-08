@@ -263,6 +263,37 @@
             display: grid;
             gap: 20px;
         }
+
+        .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .resource-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .resource-item:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .resource-desc {
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
         
         .project-item {
             background: var(--bg-card);

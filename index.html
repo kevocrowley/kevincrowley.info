@@ -319,6 +319,37 @@
             display: grid;
             gap: 20px;
         }
+
+        .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .resource-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .resource-item:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .resource-desc {
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
         
         .project-item {
             background: var(--bg-card);
@@ -867,49 +898,13 @@
         
         <section>
             <h2>Favourite Resources</h2>
-            <div class="projects-grid">
-                <div class="project-item">
-                    <h3 class="project-title">My Config Files</h3>
-                    <p class="project-description">Personal configuration files, dotfiles, and setup scripts for development environment.</p>
-                    <div class="project-tech">
-                        <a href="https://github.com/kevocrowley/configuration/tree/main" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">Hacker News</h3>
-                    <p class="project-description">The go-to source for tech news, startup ideas, and programming discussions.</p>
-                    <div class="project-tech">
-                        <a href="https://news.ycombinator.com/" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">Engineering Blogs</h3>
-                    <p class="project-description">A curated collection of engineering blogs from top tech companies and engineers.</p>
-                    <div class="project-tech">
-                        <a href="https://github.com/kilimchoi/engineering-blogs" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">The Tao of Programming</h3>
-                    <p class="project-description">An iconic book of programming wisdom and philosophical insights.</p>
-                    <div class="project-tech">
-                        <a href="http://www.canonical.org/~kragen/tao-of-programming.html#book1" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">OpenCode - Everything You Need to Know</h3>
-                    <p class="project-description">Comprehensive resource covering open source, coding, and engineering practices.</p>
-                    <div class="project-tech">
-                        <a href="https://github.com/wesammustafa/OpenCode-Everything-You-Need-to-Know" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <h3 class="project-title">How to Ask Smart Questions</h3>
-                    <p class="project-description">Essential guide on how to ask technical questions effectively in forums and communities.</p>
-                    <div class="project-tech">
-                        <a href="http://www.catb.org/~esr/faqs/smart-questions.html" target="_blank" class="btn btn-secondary">Visit</a>
-                    </div>
-                </div>
+            <div class="resources-list">
+                <a href="https://github.com/kevocrowley/configuration/tree/main" target="_blank" class="resource-item">My Config Files <span class="resource-desc">— Dotfiles and setup scripts</span></a>
+                <a href="https://news.ycombinator.com/" target="_blank" class="resource-item">Hacker News <span class="resource-desc">— Tech news and discussions</span></a>
+                <a href="https://github.com/kilimchoi/engineering-blogs" target="_blank" class="resource-item">Engineering Blogs <span class="resource-desc">— Curated collection</span></a>
+                <a href="http://www.canonical.org/~kragen/tao-of-programming.html#book1" target="_blank" class="resource-item">The Tao of Programming <span class="resource-desc">— Programming wisdom</span></a>
+                <a href="https://github.com/wesammustafa/OpenCode-Everything-You-Need-to-Know" target="_blank" class="resource-item">OpenCode Guide <span class="resource-desc">— Open source resources</span></a>
+                <a href="http://www.catb.org/~esr/faqs/smart-questions.html" target="_blank" class="resource-item">How to Ask Smart Questions <span class="resource-desc">— Technical question guide</span></a>
             </div>
         </section>
 
