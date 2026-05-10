@@ -271,41 +271,27 @@
             font-size: 0.95rem;
         }
         
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-        
-        .skill-category {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .skill-category h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-        
-        .skill-list {
+        .skills-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
+            padding: 4px 0;
         }
-        
-        .skill-tag {
+
+        .skill-badge {
             background: var(--accent-muted);
             color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 6px;
+            padding: 6px 18px;
+            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .skill-badge:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
         }
         
         .projects-grid {
@@ -542,16 +528,9 @@
         
         <section>
             <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                {% for category, items in skills.items() %}
-                <div class="skill-category">
-                    <h3>{{ category }}</h3>
-                    <div class="skill-list">
-                        {% for skill in items %}
-                        <span class="skill-tag">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
+            <div class="skills-cloud">
+                {% for skill in skills %}
+                <span class="skill-badge">{{ skill }}</span>
                 {% endfor %}
             </div>
         </section>
