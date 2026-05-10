@@ -838,11 +838,11 @@
                     </div>
                 </div>
                 <div class="project-item">
-                    <h3 class="project-title">CyberSec Incident Response - Log Obfuscation</h3>
-                    <p class="project-description">Reacted to critical security incidents and provided custom solutions to obfuscate sensitive data in logs, restrict user queries to prevent data exfiltration, and clean logs in archive S3 buckets using Lambda functions and bucket actions. Implemented automated remediation workflows and enhanced security posture.</p>
+                    <h3 class="project-title">CyberSec Incident Response — Log Remediation</h3>
+                    <p class="project-description">Responded to a critical security finding involving sensitive data leaked into application logs. Rapidly assessed the scope and implemented a multi-layered remediation: restricted log queries against the log platform, applied policy constraints on archived logs forwarded from indexes, and built a Lambda-based Python solution invoking S3 Batch Operations to programmatically unzip archived log files, scan for sensitive tags, redact matches, re-zip, and restore cleaned logs — all with zero downtime to production systems.</p>
                     <div class="project-tech">
                         <span>AWS Lambda</span>
-                        <span>S3</span>
+                        <span>S3 Batch Operations</span>
                         <span>Python</span>
                         <span>CloudWatch</span>
                         <span>Security</span>
