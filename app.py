@@ -1,11 +1,53 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, abort
 import os
+import glob
+import markdown
+
+BLOG_DIR = os.path.join(os.path.dirname(__file__), "blog")
+
+
+def get_config():
+    return {
+        "DEBUG": os.getenv("FLASK_DEBUG", "false").lower() == "true",
+        "SECRET_KEY": os.getenv("SECRET_KEY", "dev"),
+    }
+
 
 app = Flask(__name__)
+app.config.update(get_config())
+
+
+def get_blog_posts():
+    posts = []
+    pattern = os.path.join(BLOG_DIR, "*.md")
+    for md_file in sorted(glob.glob(pattern), reverse=True):
+        slug = os.path.splitext(os.path.basename(md_file))[0]
+        with open(md_file) as f:
+            lines = f.readlines()
+        title = lines[0].strip("# \n") if lines else slug
+        excerpt_lines = [l for l in lines[1:] if l.strip() and not l.startswith("```")]
+        excerpt = excerpt_lines[0].strip()[:200] if excerpt_lines else ""
+        posts.append({"slug": slug, "title": title, "excerpt": excerpt})
+    return posts
+
+
+def get_blog_post(slug):
+    md_path = os.path.join(BLOG_DIR, f"{slug}.md")
+    if not os.path.exists(md_path):
+        return None
+    with open(md_path) as f:
+        content = f.read()
+    lines = content.split("\n")
+    title = lines[0].strip("# \n") if lines else slug
+    html = markdown.markdown(content, extensions=["fenced_code"])
+    return {"title": title, "html": html}
 
 
 @app.route("/resume")
 def resume():
+    path = os.path.join(os.path.dirname(__file__), "kevin_crowley_resume.pdf")
+    if not os.path.exists(path):
+        abort(404)
     return send_from_directory(
         os.path.dirname(__file__), "kevin_crowley_resume.pdf", as_attachment=True
     )
@@ -22,7 +64,7 @@ def index():
         "linkedin": "https://www.linkedin.com/in/kevincrowleyin/",
         "slack": "https://kevincrowleyworkspace.slack.com",
         "photo": "Photo.jpg",
-        "summary": "Software development-led engineer with 20+ years of experience building and supporting enterprise infrastructure. I take a developer-first approach to solving infrastructure challenges, writing code to automate, scale, and modernize systems. Proven leader of technical projects and cross-functional teams, from greenfield data center builds to large-scale cloud migrations. Deep expertise across both on-premises data centers and cloud platforms (AWS, Azure), with strong foundations in Terraform, Kubernetes, and CI/CD automation. Known as a problem solver who gets things done, including being tasked with building out AI infrastructure in AWS to meet growing demands from SLT and developer teams. Experienced in on-call support and building reliable, observable platforms for production environments.",
+        "summary": "Software development-led platform engineer with 20+ years of experience building infrastructure that makes engineering teams productive and reliable. I take a code-first approach to infrastructure — writing automation, tooling, and platforms so developers can own their services end-to-end without friction. Proven owner of technical projects from greenfield data center builds to large-scale cloud migrations on AWS and Azure, with deep expertise in Terraform, Kubernetes, Python, and CI/CD. Recently tasked with architecting AI infrastructure on AWS Bedrock, building observability with Datadog, defining SLOs, and establishing incident response practices for production systems. Security-conscious, experienced in on-call support, and committed to building platforms that teams trust and enjoy working with.",
     }
 
     experience = [
@@ -107,6 +149,8 @@ def index():
         },
     ]
 
+    posts = get_blog_posts()
+
     return render_template(
         "index.html",
         profile=profile,
@@ -115,7 +159,16 @@ def index():
         certifications=certifications,
         skills=skills,
         projects=projects,
+        posts=posts,
     )
+
+
+@app.route("/blog/<slug>")
+def blog_post(slug):
+    post = get_blog_post(slug)
+    if post is None:
+        abort(404)
+    return render_template("blog_post.html", post=post)
 
 
 @app.errorhandler(404)
@@ -123,5 +176,19 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 
+@app.errorhandler(500)
+def server_error(e):
+    return render_template("404.html"), 500
+
+
+@app.after_request
+def add_security_headers(response):
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    return response
+
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(
+        debug=app.config["DEBUG"], host="0.0.0.0", port=int(os.getenv("PORT", 5000))
+    )
