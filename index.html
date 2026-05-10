@@ -308,46 +308,27 @@
             font-size: 0.95rem;
         }
         
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-        
-        .skill-category {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            transition: border-color 0.2s;
-        }
-
-        .skill-category:hover {
-            border-color: var(--accent);
-        }
-        
-        .skill-category h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-        
-        .skill-list {
+        .skills-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
+            padding: 4px 0;
         }
-        
-        .skill-tag {
+
+        .skill-badge {
             background: var(--accent-muted);
             color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 6px;
+            padding: 6px 18px;
+            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .skill-badge:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
         }
         
         .projects-grid {
@@ -783,87 +764,26 @@
         
         <section>
             <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Cloud Platforms</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">AWS</span>
-                        <span class="skill-tag">Azure</span>
-                        <span class="skill-tag">DigitalOcean</span>
-                        <span class="skill-tag">MongoDB Atlas</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Infrastructure as Code</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Terraform</span>
-                        <span class="skill-tag">Terragrunt</span>
-                        <span class="skill-tag">Ansible</span>
-                        <span class="skill-tag">Puppet</span>
-                        <span class="skill-tag">CloudFormation</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Container Orchestration</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Kubernetes</span>
-                        <span class="skill-tag">EKS</span>
-                        <span class="skill-tag">Docker</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Observability</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Datadog</span>
-                        <span class="skill-tag">Elasticsearch</span>
-                        <span class="skill-tag">Grafana</span>
-                        <span class="skill-tag">Nagios</span>
-                        <span class="skill-tag">Zabbix</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Programming</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">Bash</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Databases</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">RDS</span>
-                        <span class="skill-tag">MongoDB</span>
-                        <span class="skill-tag">Elasticache</span>
-                        <span class="skill-tag">RabbitMQ</span>
-                        <span class="skill-tag">Kafka</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Networking</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Cisco</span>
-                        <span class="skill-tag">Juniper</span>
-                        <span class="skill-tag">DNS</span>
-                        <span class="skill-tag">VLANs</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>CI/CD</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">GitHub Actions</span>
-                        <span class="skill-tag">CodePipeline</span>
-                        <span class="skill-tag">Jenkins</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>SRE & Support</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">On-Call L2</span>
-                        <span class="skill-tag">Incident Response</span>
-                        <span class="skill-tag">Root Cause Analysis</span>
-                        <span class="skill-tag">SLA Management</span>
-                    </div>
-                </div>
+            <div class="skills-cloud">
+                <span class="skill-badge">AWS</span>
+                <span class="skill-badge">Azure</span>
+                <span class="skill-badge">Terraform</span>
+                <span class="skill-badge">Terragrunt</span>
+                <span class="skill-badge">HCL</span>
+                <span class="skill-badge">Kubernetes</span>
+                <span class="skill-badge">Docker</span>
+                <span class="skill-badge">Ansible</span>
+                <span class="skill-badge">Python</span>
+                <span class="skill-badge">Bash</span>
+                <span class="skill-badge">Datadog</span>
+                <span class="skill-badge">Prometheus</span>
+                <span class="skill-badge">Grafana</span>
+                <span class="skill-badge">ELK Stack</span>
+                <span class="skill-badge">GitHub Actions</span>
+                <span class="skill-badge">Jenkins</span>
+                <span class="skill-badge">PostgreSQL</span>
+                <span class="skill-badge">Redis</span>
+                <span class="skill-badge">MongoDB</span>
             </div>
         </section>
         

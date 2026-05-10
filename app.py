@@ -102,14 +102,27 @@ def index():
         },
     ]
 
-    skills = {
-        "Infrastructure as Code": ["Terraform", "HCL", "Terragrunt"],
-        "Programming": ["Python", "Bash"],
-        "Cloud Platforms": ["AWS", "Azure"],
-        "Observability": ["Prometheus", "Grafana", "ELK Stack", "Datadog"],
-        "CI/CD": ["GitHub Actions", "Jenkins"],
-        "Databases": ["PostgreSQL", "Redis", "MongoDB"],
-    }
+    skills = [
+        "AWS",
+        "Azure",
+        "Terraform",
+        "Terragrunt",
+        "HCL",
+        "Kubernetes",
+        "Docker",
+        "Ansible",
+        "Python",
+        "Bash",
+        "Datadog",
+        "Prometheus",
+        "Grafana",
+        "ELK Stack",
+        "GitHub Actions",
+        "Jenkins",
+        "PostgreSQL",
+        "Redis",
+        "MongoDB",
+    ]
 
     projects = [
         {
