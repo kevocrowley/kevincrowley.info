@@ -330,7 +330,16 @@
             border-color: var(--accent);
             transform: translateY(-1px);
         }
-        
+
+        .badge-green  { background: rgba(45, 125, 70, 0.15); color: #2d7d46; }
+        .badge-green:hover { border-color: #2d7d46; }
+        .badge-purple { background: rgba(74, 21, 75, 0.15); color: #4A154B; }
+        .badge-purple:hover { border-color: #4A154B; }
+        .badge-blue   { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .badge-blue:hover { border-color: #3b82f6; }
+        .badge-red    { background: rgba(234, 67, 53, 0.15); color: #EA4335; }
+        .badge-red:hover { border-color: #EA4335; }
+
         .projects-grid {
             display: grid;
             gap: 20px;
@@ -840,43 +849,23 @@
 
         <section>
             <h2>Hobbies & Interests</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Volunteering</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Scout Leader (3 years)</span>
-                        <span class="skill-tag">U13 Soccer Coach (4 years)</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Music</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Classical Guitar - Grade 5</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Reading</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Technology</span>
-                        <span class="skill-tag">Economics</span>
-                        <span class="skill-tag">Science</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Interests</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Gaming</span>
-                        <span class="skill-tag">Astronomy</span>
-                        <span class="skill-tag">Economics</span>
-                    </div>
-                </div>
+            <div class="skills-cloud">
+                <span class="skill-badge badge-green">Scout Leader (3 years)</span>
+                <span class="skill-badge badge-green">U13 Soccer Coach (4 years)</span>
+                <span class="skill-badge badge-purple">Classical Guitar - Grade 5</span>
+                <span class="skill-badge badge-blue">Technology</span>
+                <span class="skill-badge badge-blue">Economics</span>
+                <span class="skill-badge badge-blue">Science</span>
+                <span class="skill-badge badge-red">Gaming</span>
+                <span class="skill-badge badge-red">Astronomy</span>
+                <span class="skill-badge badge-red">Economics</span>
             </div>
         </section>
     </main>
     
     <footer>
         <div class="container">
-            <p>&copy; 2026 Kevin Crowley. SRE providing Level 2 on-call support. Terraform & Terragrunt for AWS, MongoDB Atlas, Akamai, Datadog.</p>
+            <p>&copy; 2026 Kevin Crowley. Platform Engineer · SRE · Terraform · AWS · Kubernetes</p>
         </div>
     </footer>
 
