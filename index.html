@@ -340,6 +340,27 @@
         .badge-red    { background: rgba(234, 67, 53, 0.15); color: #EA4335; }
         .badge-red:hover { border-color: #EA4335; }
 
+        .hobby-group {
+            margin-bottom: 16px;
+        }
+
+        .hobby-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .hobby-category {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .hobby-group .skills-cloud {
+            padding: 0;
+        }
+
         .projects-grid {
             display: grid;
             gap: 20px;
@@ -849,16 +870,34 @@
 
         <section>
             <h2>Hobbies & Interests</h2>
-            <div class="skills-cloud">
-                <span class="skill-badge badge-green">Scout Leader (3 years)</span>
-                <span class="skill-badge badge-green">U13 Soccer Coach (4 years)</span>
-                <span class="skill-badge badge-purple">Classical Guitar - Grade 5</span>
-                <span class="skill-badge badge-blue">Technology</span>
-                <span class="skill-badge badge-blue">Economics</span>
-                <span class="skill-badge badge-blue">Science</span>
-                <span class="skill-badge badge-red">Gaming</span>
-                <span class="skill-badge badge-red">Astronomy</span>
-                <span class="skill-badge badge-red">Economics</span>
+            <div class="hobby-group">
+                <h3 class="hobby-category">Volunteering</h3>
+                <div class="skills-cloud">
+                    <span class="skill-badge badge-green">Scout Leader (3 years)</span>
+                    <span class="skill-badge badge-green">U13 Soccer Coach (4 years)</span>
+                </div>
+            </div>
+            <div class="hobby-group">
+                <h3 class="hobby-category">Music</h3>
+                <div class="skills-cloud">
+                    <span class="skill-badge badge-purple">Classical Guitar - Grade 5</span>
+                </div>
+            </div>
+            <div class="hobby-group">
+                <h3 class="hobby-category">Reading</h3>
+                <div class="skills-cloud">
+                    <span class="skill-badge badge-blue">Technology</span>
+                    <span class="skill-badge badge-blue">Economics</span>
+                    <span class="skill-badge badge-blue">Science</span>
+                </div>
+            </div>
+            <div class="hobby-group">
+                <h3 class="hobby-category">Interests</h3>
+                <div class="skills-cloud">
+                    <span class="skill-badge badge-red">Gaming</span>
+                    <span class="skill-badge badge-red">Astronomy</span>
+                    <span class="skill-badge badge-red">Economics</span>
+                </div>
             </div>
         </section>
     </main>
