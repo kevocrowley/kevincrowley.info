@@ -107,10 +107,10 @@ def index():
         "Azure",
         "Terraform",
         "Terragrunt",
-        "HCL",
         "Kubernetes",
         "Docker",
         "Ansible",
+        "Puppet",
         "Python",
         "Bash",
         "Datadog",
@@ -122,6 +122,7 @@ def index():
         "PostgreSQL",
         "Redis",
         "MongoDB",
+        "Kafka",
     ]
 
     projects = [
