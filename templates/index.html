@@ -382,6 +382,38 @@
             font-family: 'SF Mono', Monaco, monospace;
         }
         
+        .blog-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .blog-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: border-color 0.2s;
+        }
+
+        .blog-item:hover {
+            border-color: var(--accent);
+        }
+
+        .blog-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
         .certs-list {
             display: flex;
             flex-direction: column;
@@ -542,6 +574,31 @@
                     </div>
                 </div>
                 {% endfor %}
+            </div>
+        </section>
+
+        {% if posts %}
+        <section>
+            <h2>Blog</h2>
+            <div class="blog-grid">
+                {% for post in posts %}
+                <a href="/blog/{{ post.slug }}" class="blog-item">
+                    <div class="blog-title">{{ post.title }}</div>
+                    <div class="blog-excerpt">{{ post.excerpt }}...</div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <section>
+            <h2>Fun Stuff</h2>
+            <div class="resources-list">
+                <a href="https://news.ycombinator.com/" target="_blank" class="resource-item">Hacker News <span class="resource-desc">— Tech news and discussions</span></a>
+                <a href="https://github.com/kilimchoi/engineering-blogs" target="_blank" class="resource-item">Engineering Blogs <span class="resource-desc">— Curated collection</span></a>
+                <a href="http://www.canonical.org/~kragen/tao-of-programming.html#book1" target="_blank" class="resource-item">The Tao of Programming <span class="resource-desc">— Programming wisdom</span></a>
+                <a href="https://github.com/wesammustafa/OpenCode-Everything-You-Need-to-Know" target="_blank" class="resource-item">OpenCode Guide <span class="resource-desc">— Open source resources</span></a>
+                <a href="http://www.catb.org/~esr/faqs/smart-questions.html" target="_blank" class="resource-item">How to Ask Smart Questions <span class="resource-desc">— Technical question guide</span></a>
             </div>
         </section>
     </main>
